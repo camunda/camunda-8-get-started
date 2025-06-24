@@ -16,6 +16,12 @@ Download the latest 8.8 release of c8run from [the c8run download page](https://
 
 See [here](https://docs.camunda.io/docs/self-managed/setup/deploy/local/c8run/) for information on prerequisites for running c8run.
 
+## Start a process instance
+
+1. Open Camunda Modeler
+2. Open the file `bpmn/diagram_1.bpmn`
+3. Start a new process instance
+
 ## Run Node.js workers
 
 ```bash
@@ -30,12 +36,6 @@ npm start
 cd java
 mvn spring-boot:run
 ```
-
-## Start a process instance
-
-1. Open Camunda Modeler
-2. Open the file `bpmn/diagram_1.bpmn`
-3. Start a new process instance
 
 # Creating a new project from scratch
 
