@@ -12,11 +12,11 @@ Download the Camunda Modeler from the [Camunda download website](https://camunda
 
 C8run is a self-contained Java application that runs Camunda 8 locally. 
 
-Download the latest stable release of c8run from [the c8run download page](https://downloads.camunda.cloud/release/camunda/c8run/).
+Download the latest 8.8 release of c8run from [the c8run download page](https://downloads.camunda.cloud/release/camunda/c8run/).
 
 See [here](https://docs.camunda.io/docs/self-managed/setup/deploy/local/c8run/) for information on prerequisites for running c8run.
 
-## Run Node.js Workers
+## Run Node.js workers
 
 ```bash
 cd nodejs
@@ -24,8 +24,25 @@ npm i
 npm start
 ```
 
+## Run Java workers
+
+```bash
+cd java
+mvn spring-boot:run
+```
+
 ## Start a process instance
 
 1. Open Camunda Modeler
 2. Open the file `bpmn/diagram_1.bpmn`
 3. Start a new process instance
+
+# Creating a new project from scratch
+
+```
+mkdir project
+cd project
+npm init -y
+npx tsc --init
+npm i @camunda8/sdk
+```
