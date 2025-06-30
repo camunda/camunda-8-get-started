@@ -14,9 +14,9 @@ import io.camunda.spring.client.annotation.JobWorker;
 public class ChargePaymentWorker {
  private final static Logger LOG = LoggerFactory.getLogger(ChargePaymentWorker.class);
     @JobWorker(type = "charge-payment")
-    public Map<String, String> processPayment(final ActivatedJob job) {
+    public void processPayment(final ActivatedJob job) {
         LOG.info("Processing charge-payment job: {}", job.getKey());
         LOG.info("charge-payment job completed: {}", job.getKey());
-        return Map.of();
+        return;
     }
 }
