@@ -8,7 +8,6 @@ describe('Process Test Suite', () => {
         const client = setup.getClient().getCamundaRestClient();
         const context = setup.getContext();
         await context.deployProcess('../bpmn/diagram_1.bpmn')
-        // const workers = require('../workers').client // Start the job workers
 
         const processInstance = await client.createProcessInstance({
             processDefinitionId: 'process1',
