@@ -2,8 +2,6 @@ package io.camunda.demo.process_order;
 
 import io.camunda.client.api.response.ActivatedJob;
 
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
