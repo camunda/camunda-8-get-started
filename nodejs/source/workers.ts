@@ -13,7 +13,7 @@ class Variables extends Dto.LosslessDto {
 
 /** Client is injected to allow testing with @camunda8/process-test */
 export function startWorkers(client: CamundaRestClient) {
-    const inventoryWorker = client.createJobWorker<Variables, typeof Dto.LosslessDto>({ // The first type parameter is the input variables, the second is the output variables
+    const inventoryWorker = client.createJobWorker<Variables, Variables>({ // The first type parameter is the input variables, the second is the output variables
         type: 'check-inventory',
         timeout: 10000, // Timeout for the job worker to complete the job before it is available for another worker poll
         maxJobsToActivate: 5, // Maximum number of jobs to process concurrently
