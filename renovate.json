@@ -28,6 +28,19 @@
       "matchDepTypes": ["devDependencies"],
       "automerge": true,
       "automergeType": "pr"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["^nodejs/camunda-test-config\\.json$"],
+      "matchStrings": [
+        "\"camundaDockerImageVersion\":\\s*\"(?<currentValue>.*?)\""
+      ],
+      "datasourceTemplate": "docker",
+      "registryUrlTemplate": "https://index.docker.io",
+      "depNameTemplate": "camunda/camunda",
+      "versioningTemplate": "semver",
+      "groupName": "Camunda Docker dependencies",
+      "schedule": ["before 4am on monday"]
     }
   ],
   "maven": {
