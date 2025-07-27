@@ -31,6 +31,7 @@
     },
     {
       "customType": "regex",
+      "matchManagers": ["regex"],
       "fileMatch": ["^nodejs/camunda-test-config\\.json$"],
       "matchStrings": [
         "\"camundaDockerImageVersion\":\\s*\"(?<currentValue>.*?)\""
