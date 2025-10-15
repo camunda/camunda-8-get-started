@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npx ts-node index.ts",
+    "start": "npx ts-node source/index.ts",
     "test": "npx jest",
     "build": "npx tsc"
   },
