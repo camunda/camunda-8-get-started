@@ -1,4 +1,5 @@
 package io.camunda.demo.process_order;
+import io.camunda.client.annotation.JobWorker;
 import io.camunda.client.api.response.ActivatedJob;
 
 import java.util.Map;
@@ -6,8 +7,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import io.camunda.spring.client.annotation.JobWorker;
 
 @Component
 public class ShipItemsWorker {

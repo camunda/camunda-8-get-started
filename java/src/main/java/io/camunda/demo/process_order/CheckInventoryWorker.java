@@ -2,14 +2,14 @@ package io.camunda.demo.process_order;
 
 import java.util.Map;
 
+import io.camunda.client.annotation.JobWorker;
+import io.camunda.client.annotation.Variable;
 import io.camunda.client.api.response.ActivatedJob;
 import jakarta.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import io.camunda.spring.client.annotation.JobWorker;
-import io.camunda.spring.client.annotation.Variable;
 
 @Component
 public class CheckInventoryWorker {
