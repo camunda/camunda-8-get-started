@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ShipItemsWorker {
- private final static Logger LOG = LoggerFactory.getLogger(ChargePaymentWorker.class);
+ private final static Logger LOG = LoggerFactory.getLogger(ShipItemsWorker.class);
     @JobWorker(type = "ship-items")
     public Map<String, String> shipItems(final ActivatedJob job) {
         LOG.info("Processing ship-items job: {}", job.getKey());
