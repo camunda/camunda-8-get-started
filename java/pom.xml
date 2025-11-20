@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.3</version>
+		<version>3.5.8</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.camunda.demo</groupId>
@@ -59,7 +59,7 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>5.13.3</version>
+			<version>5.14.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
