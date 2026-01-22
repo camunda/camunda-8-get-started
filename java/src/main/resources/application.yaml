@@ -1,0 +1,22 @@
+spring:
+    application:
+        name: Process Order
+camunda:
+#    client:
+#        mode: self-managed
+#        rest-address: http://127.0.0.1:8080
+    clients:
+        raft-partition:
+            mode: self-managed
+            primary: true
+            rest-address: http://127.0.0.1:8080/engines/raft-partition
+        engine-2:
+            mode: self-managed
+            rest-address: http://127.0.0.1:8080/engines/engine-2
+
+
+logging:
+    level:
+        io.camunda.client: INFO
+#        root: debug
+
