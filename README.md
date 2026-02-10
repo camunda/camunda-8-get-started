@@ -2,6 +2,8 @@
 
 This [demonstration project](https://github.com/camunda/camunda-8-get-started) allows you to get started with Camunda 8 - running a local instance of Camunda 8, deploying a process model from the Camunda Modeler, and starting an instance that is serviced by job workers using either the Spring SDK (Java) or the Node.js SDK (Javascript).
 
+Refer to the [Camunda Documentation](https://docs.camunda.io/docs/guides/getting-started-example/) for additional information.
+
 ## Download Demonstration Project
 
 ```bash
