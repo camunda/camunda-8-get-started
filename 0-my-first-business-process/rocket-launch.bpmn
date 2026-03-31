@@ -33,15 +33,8 @@
     <bpmn:endEvent id="EndEvent_Abort" name="Mission scrubbed ❌">
       <bpmn:incoming>Flow_Abort_End</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:scriptTask id="Task_Destination" name="Plot destination">
-      <bpmn:extensionElements>
-        <zeebe:script expression="=if fuelLevel &#62; 75 then &#34;Mars&#34; else &#34;Moon&#34;" resultVariable="destination" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_Timer_Destination</bpmn:incoming>
-      <bpmn:outgoing>Flow_Destination_ParSplit</bpmn:outgoing>
-    </bpmn:scriptTask>
     <bpmn:parallelGateway id="Gateway_ParSplit">
-      <bpmn:incoming>Flow_Destination_ParSplit</bpmn:incoming>
+      <bpmn:incoming>Flow_065ifs0</bpmn:incoming>
       <bpmn:outgoing>Flow_Par_Engines</bpmn:outgoing>
       <bpmn:outgoing>Flow_Par_Experiments</bpmn:outgoing>
     </bpmn:parallelGateway>
@@ -81,14 +74,21 @@
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_NoGo" name="NO-GO 🔴" sourceRef="Gateway_Systems" targetRef="Task_Abort" />
     <bpmn:sequenceFlow id="Flow_Abort_End" sourceRef="Task_Abort" targetRef="EndEvent_Abort" />
-    <bpmn:sequenceFlow id="Flow_Timer_Destination" sourceRef="Timer_Countdown" targetRef="Task_Destination" />
-    <bpmn:sequenceFlow id="Flow_Destination_ParSplit" sourceRef="Task_Destination" targetRef="Gateway_ParSplit" />
+    <bpmn:sequenceFlow id="Flow_Timer_Destination" sourceRef="Timer_Countdown" targetRef="Activity_0sb885k" />
     <bpmn:sequenceFlow id="Flow_Par_Engines" sourceRef="Gateway_ParSplit" targetRef="Task_Engines" />
     <bpmn:sequenceFlow id="Flow_Par_Experiments" sourceRef="Gateway_ParSplit" targetRef="Task_Experiments" />
     <bpmn:sequenceFlow id="Flow_Engines_Merge" sourceRef="Task_Engines" targetRef="Gateway_ParMerge" />
     <bpmn:sequenceFlow id="Flow_Experiments_Merge" sourceRef="Task_Experiments" targetRef="Gateway_ParMerge" />
     <bpmn:sequenceFlow id="Flow_Merge_Report" sourceRef="Gateway_ParMerge" targetRef="Task_Report" />
     <bpmn:sequenceFlow id="Flow_Report_End" sourceRef="Task_Report" targetRef="EndEvent_Success" />
+    <bpmn:businessRuleTask id="Activity_0sb885k" name="Plot destination">
+      <bpmn:extensionElements>
+        <zeebe:calledDecision decisionId="plot-destination" resultVariable="destination" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_Timer_Destination</bpmn:incoming>
+      <bpmn:outgoing>Flow_065ifs0</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="Flow_065ifs0" sourceRef="Activity_0sb885k" targetRef="Gateway_ParSplit" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="rocket-launch">
@@ -124,10 +124,6 @@
           <dc:Bounds x="643" y="375" width="96" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Task_Destination_di" bpmnElement="Task_Destination">
-        <dc:Bounds x="600" y="160" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_ParSplit_di" bpmnElement="Gateway_ParSplit">
         <dc:Bounds x="750" y="175" width="50" height="50" />
       </bpmndi:BPMNShape>
@@ -151,6 +147,10 @@
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1265" y="225" width="92" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1te5yxu_di" bpmnElement="Activity_0sb885k">
+        <dc:Bounds x="610" y="160" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_Start_Preflight_di" bpmnElement="Flow_Start_Preflight">
         <di:waypoint x="196" y="200" />
@@ -181,11 +181,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_Timer_Destination_di" bpmnElement="Flow_Timer_Destination">
         <di:waypoint x="548" y="200" />
-        <di:waypoint x="600" y="200" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_Destination_ParSplit_di" bpmnElement="Flow_Destination_ParSplit">
-        <di:waypoint x="700" y="200" />
-        <di:waypoint x="750" y="200" />
+        <di:waypoint x="610" y="200" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_Par_Engines_di" bpmnElement="Flow_Par_Engines">
         <di:waypoint x="775" y="175" />
@@ -214,6 +210,10 @@
       <bpmndi:BPMNEdge id="Flow_Report_End_di" bpmnElement="Flow_Report_End">
         <di:waypoint x="1230" y="200" />
         <di:waypoint x="1292" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_065ifs0_di" bpmnElement="Flow_065ifs0">
+        <di:waypoint x="710" y="200" />
+        <di:waypoint x="750" y="200" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
