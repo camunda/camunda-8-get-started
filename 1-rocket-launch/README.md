@@ -47,13 +47,13 @@ The simplest way to interact with Camunda is using the CLI tool called `c8ctl`. 
 ### 0. Install `c8ctl`
 
 ```bash
-npm install -g @camunda/c8ctl
+npm install @camunda8/cli -g
 ```
 
 ### 1. Start Camunda
 
 ```bash
-c8ctl c8run start
+c8ctl cluster start
 ```
 
 ### 2. Deploy
