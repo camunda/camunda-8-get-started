@@ -22,7 +22,7 @@ public class ProcessOrderApplicationTests {
         // given: the processes are deployed
         client
                 .newDeployResourceCommand()
-                .addResourceFromClasspath("diagram_1.bpmn")
+                .addResourceFromClasspath("order-process.bpmn")
                 .send()
                 .join();
 
