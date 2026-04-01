@@ -17,9 +17,9 @@ jobs:
           node-version: "24" # Specify a Node.js version
 
       - name: Install dependencies
-        run: cd nodejs && npm install
+        run: cd 2-order-process-with-service-workers/nodejs && npm install
 
       - name: Run Tests
         run: |
-          cd nodejs && npm test
+          cd 2-order-process-with-service-workers/nodejs && npm test
 
