@@ -1,55 +1,65 @@
-# Getting Started with Camunda 8
+# Camunda 8 Get Started Examples
 
-This [demonstration project](https://github.com/camunda/camunda-8-get-started) allows you to get started with Camunda 8 - running a local instance of Camunda 8, deploying a process model from the Camunda Modeler, and starting an instance that is serviced by job workers using either the Spring SDK (Java) or the Node.js SDK (Javascript).
+This repository contains hands-on Camunda 8 examples that help you get started with the platform, and progress from a fully automated BPMN/DMN flow to service-worker based process automation.
 
-Refer to the [Camunda Documentation](https://docs.camunda.io/docs/guides/getting-started-example/) for additional information.
+## What is in this repo
 
-## Download Demonstration Project
+- `1-rocket-launch/`
+- A self-contained BPMN + DMN example (`rocket-launch.bpmn`, `plot-destination.dmn`)
+- No external workers required; logic is handled with script tasks and decisions
+- Best for understanding process flow, gateways, timers, and decision tables
 
-```bash
-git clone https://github.com/camunda/camunda-8-get-started.git
-```
+- `2-order-process-with-service-workers/`
+- A process example that uses external job workers
+- Includes two worker implementations:
+- `java/` (Spring Boot, Java 21)
+- `nodejs/` (TypeScript, `@camunda8/sdk`)
+- Best for learning worker-based orchestration and application integration
 
-## Download Camunder Modeler
+- `renovate.json`
+- Dependency update automation configuration
 
-The Camunda Modeler is a graphical tool for creating and editing BPMN process models.
+## Recommended learning path
 
-Download the Camunda Modeler from the [Camunda download website](https://camunda.com/download/modeler/).
+1. Start with `1-rocket-launch`.
+2. Move to `2-order-process-with-service-workers`.
+   1. Pick one worker stack first (`java` or `nodejs`), then try the other.
 
-## Download Camunda 8 Run
+## Prerequisites
 
-Camunda 8 Run is a self-contained Java application that runs Camunda 8 locally. 
+- Camunda 8 local environment (for example via `c8ctl c8run`)
+- Camunda Modeler (recommended for viewing the models, deploying/running visually)
+- For Java example:
+- JDK 21+
+- Maven
+- For Node.js example:
+- Node.js 18+
+- npm
 
-Download the latest 8.8 release of Camunda 8 Run from [the download page](https://downloads.camunda.cloud/release/camunda/c8run/).
+## Quick start
 
-Camunda 8 Run requires JDK 21-23.
+### 1) Hello World process (no workers)
 
-See [here](https://docs.camunda.io/docs/self-managed/setup/deploy/local/c8run/) for more information on running Camunda 8 Run.
+Follow the detailed guide in:
+- `1-rocket-launch/README.md`
 
-Start Camunda 8 Run. 
+### 2) Order process with workers
 
-## Start a process instance
+Follow the detailed guide in:
+- `2-order-process-with-service-workers/README.md`
 
-1. Open Camunda Modeler
-2. Open the file `bpmn/diagram_1.bpmn` from the example project.
-3. Start a new process instance in the Modeler by clicking the Play icon in the bottom toolbar.
+Then run one worker implementation.
 
-You can view the process instance in Operate, the visual operating tool, by going to [http://localhost:8080/operate](http://localhost:8080/operate). The login details are `demo`/`demo`.
+## Suggested progression for new users
 
-There you will see an active process instance. (Note: when the workers are running, process instances will be completed immediately and further process instances will not appear as active).
+1. Deploy and run `rocket-launch.bpmn` and inspect execution in Operate.
+2. Change input variables and observe different paths.
+3. Deploy the order process and run with Java workers.
+4. Repeat with Node.js workers.
+5. Compare implementation styles between Java and TypeScript.
 
-## Run Node.js workers (if using JavaScript)
+## Where to go next
 
-```bash
-cd nodejs
-npm i
-npm start
-```
-
-## Run Java workers (if using Java)
-
-```bash
-cd java
-mvn spring-boot:run
-```
-
+- Extend DMN rules and process gateways.
+- Add your own service task and worker.
+- Explore more complex BPMN patterns (subprocesses, event-based gateways, etc) in the [Camunda tutorials repository](https://github.com/camunda/camunda-8-tutorials)

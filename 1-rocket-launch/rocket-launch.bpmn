@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_RocketLaunch" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.44.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.9.0">
+  <bpmn:process id="rocket-launch" name="Rocket Launch 🚀" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Launch sequence initiated">
+      <bpmn:outgoing>Flow_Start_Preflight</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:scriptTask id="Task_Preflight" name="Pre-flight check">
+      <bpmn:extensionElements>
+        <zeebe:script expression="=if fuelLevel &#62;= 50 then &#34;ALL SYSTEMS GO&#34; else &#34;ABORT&#34;" resultVariable="systemStatus" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_Start_Preflight</bpmn:incoming>
+      <bpmn:outgoing>Flow_Preflight_Systems</bpmn:outgoing>
+    </bpmn:scriptTask>
+    <bpmn:exclusiveGateway id="Gateway_Systems" name="Systems go?" default="Flow_NoGo">
+      <bpmn:incoming>Flow_Preflight_Systems</bpmn:incoming>
+      <bpmn:outgoing>Flow_Go</bpmn:outgoing>
+      <bpmn:outgoing>Flow_NoGo</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:intermediateCatchEvent id="Timer_Countdown" name="Countdown T-10">
+      <bpmn:incoming>Flow_Go</bpmn:incoming>
+      <bpmn:outgoing>Flow_Timer_Destination</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerDef_1">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT10S</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:scriptTask id="Task_Abort" name="Abort mission">
+      <bpmn:extensionElements>
+        <zeebe:script expression="=&#34;Mission &#34; + missionName + &#34; scrubbed — not enough fuel (&#34; + string(fuelLevel) + &#34;%)&#34;" resultVariable="missionResult" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_NoGo</bpmn:incoming>
+      <bpmn:outgoing>Flow_Abort_End</bpmn:outgoing>
+    </bpmn:scriptTask>
+    <bpmn:endEvent id="EndEvent_Abort" name="Mission scrubbed ❌">
+      <bpmn:incoming>Flow_Abort_End</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:parallelGateway id="Gateway_ParSplit">
+      <bpmn:incoming>Flow_065ifs0</bpmn:incoming>
+      <bpmn:outgoing>Flow_Par_Engines</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Par_Experiments</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:scriptTask id="Task_Engines" name="Burn stage 1">
+      <bpmn:extensionElements>
+        <zeebe:script expression="=fuelLevel - 25" resultVariable="fuelAfterBurn" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_Par_Engines</bpmn:incoming>
+      <bpmn:outgoing>Flow_Engines_Merge</bpmn:outgoing>
+    </bpmn:scriptTask>
+    <bpmn:scriptTask id="Task_Experiments" name="Run experiments">
+      <bpmn:extensionElements>
+        <zeebe:script expression="=if fuelLevel &#62; 75 then 5 else 3" resultVariable="experimentsRun" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_Par_Experiments</bpmn:incoming>
+      <bpmn:outgoing>Flow_Experiments_Merge</bpmn:outgoing>
+    </bpmn:scriptTask>
+    <bpmn:parallelGateway id="Gateway_ParMerge">
+      <bpmn:incoming>Flow_Engines_Merge</bpmn:incoming>
+      <bpmn:incoming>Flow_Experiments_Merge</bpmn:incoming>
+      <bpmn:outgoing>Flow_Merge_Report</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:scriptTask id="Task_Report" name="Mission report">
+      <bpmn:extensionElements>
+        <zeebe:script expression="=&#34;Crew &#34; + missionName + &#34; reached &#34; + destination + &#34;! Fuel: &#34; + string(fuelAfterBurn) + &#34;%. Experiments: &#34; + string(experimentsRun)" resultVariable="missionResult" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_Merge_Report</bpmn:incoming>
+      <bpmn:outgoing>Flow_Report_End</bpmn:outgoing>
+    </bpmn:scriptTask>
+    <bpmn:endEvent id="EndEvent_Success" name="Mission complete! 🎉">
+      <bpmn:incoming>Flow_Report_End</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_Start_Preflight" sourceRef="StartEvent_1" targetRef="Task_Preflight" />
+    <bpmn:sequenceFlow id="Flow_Preflight_Systems" sourceRef="Task_Preflight" targetRef="Gateway_Systems" />
+    <bpmn:sequenceFlow id="Flow_Go" name="GO 🟢" sourceRef="Gateway_Systems" targetRef="Timer_Countdown">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=systemStatus = "ALL SYSTEMS GO"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_NoGo" name="NO-GO 🔴" sourceRef="Gateway_Systems" targetRef="Task_Abort" />
+    <bpmn:sequenceFlow id="Flow_Abort_End" sourceRef="Task_Abort" targetRef="EndEvent_Abort" />
+    <bpmn:sequenceFlow id="Flow_Timer_Destination" sourceRef="Timer_Countdown" targetRef="Activity_0sb885k" />
+    <bpmn:sequenceFlow id="Flow_Par_Engines" sourceRef="Gateway_ParSplit" targetRef="Task_Engines" />
+    <bpmn:sequenceFlow id="Flow_Par_Experiments" sourceRef="Gateway_ParSplit" targetRef="Task_Experiments" />
+    <bpmn:sequenceFlow id="Flow_Engines_Merge" sourceRef="Task_Engines" targetRef="Gateway_ParMerge" />
+    <bpmn:sequenceFlow id="Flow_Experiments_Merge" sourceRef="Task_Experiments" targetRef="Gateway_ParMerge" />
+    <bpmn:sequenceFlow id="Flow_Merge_Report" sourceRef="Gateway_ParMerge" targetRef="Task_Report" />
+    <bpmn:sequenceFlow id="Flow_Report_End" sourceRef="Task_Report" targetRef="EndEvent_Success" />
+    <bpmn:businessRuleTask id="Activity_0sb885k" name="Plot destination">
+      <bpmn:extensionElements>
+        <zeebe:calledDecision decisionId="plot-destination" resultVariable="destination" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_Timer_Destination</bpmn:incoming>
+      <bpmn:outgoing>Flow_065ifs0</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="Flow_065ifs0" sourceRef="Activity_0sb885k" targetRef="Gateway_ParSplit" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="rocket-launch">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="160" y="182" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="136" y="225" width="86" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Preflight_di" bpmnElement="Task_Preflight">
+        <dc:Bounds x="250" y="160" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Systems_di" bpmnElement="Gateway_Systems" isMarkerVisible="true">
+        <dc:Bounds x="400" y="175" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="393" y="153" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Timer_Countdown_di" bpmnElement="Timer_Countdown">
+        <dc:Bounds x="512" y="182" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="491" y="225" width="81" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Abort_di" bpmnElement="Task_Abort">
+        <dc:Bounds x="510" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Abort_di" bpmnElement="EndEvent_Abort">
+        <dc:Bounds x="672" y="332" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="643" y="375" width="96" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ParSplit_di" bpmnElement="Gateway_ParSplit">
+        <dc:Bounds x="750" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Engines_di" bpmnElement="Task_Engines">
+        <dc:Bounds x="860" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Experiments_di" bpmnElement="Task_Experiments">
+        <dc:Bounds x="860" y="250" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ParMerge_di" bpmnElement="Gateway_ParMerge">
+        <dc:Bounds x="1020" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Report_di" bpmnElement="Task_Report">
+        <dc:Bounds x="1130" y="160" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Success_di" bpmnElement="EndEvent_Success">
+        <dc:Bounds x="1292" y="182" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1265" y="225" width="92" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1te5yxu_di" bpmnElement="Activity_0sb885k">
+        <dc:Bounds x="610" y="160" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Start_Preflight_di" bpmnElement="Flow_Start_Preflight">
+        <di:waypoint x="196" y="200" />
+        <di:waypoint x="250" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Preflight_Systems_di" bpmnElement="Flow_Preflight_Systems">
+        <di:waypoint x="350" y="200" />
+        <di:waypoint x="400" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Go_di" bpmnElement="Flow_Go">
+        <di:waypoint x="450" y="200" />
+        <di:waypoint x="512" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="463" y="182" width="36" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_NoGo_di" bpmnElement="Flow_NoGo">
+        <di:waypoint x="425" y="225" />
+        <di:waypoint x="425" y="350" />
+        <di:waypoint x="510" y="350" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="430" y="283" width="54" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Abort_End_di" bpmnElement="Flow_Abort_End">
+        <di:waypoint x="610" y="350" />
+        <di:waypoint x="672" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Timer_Destination_di" bpmnElement="Flow_Timer_Destination">
+        <di:waypoint x="548" y="200" />
+        <di:waypoint x="610" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Par_Engines_di" bpmnElement="Flow_Par_Engines">
+        <di:waypoint x="775" y="175" />
+        <di:waypoint x="775" y="120" />
+        <di:waypoint x="860" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Par_Experiments_di" bpmnElement="Flow_Par_Experiments">
+        <di:waypoint x="775" y="225" />
+        <di:waypoint x="775" y="290" />
+        <di:waypoint x="860" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Engines_Merge_di" bpmnElement="Flow_Engines_Merge">
+        <di:waypoint x="960" y="120" />
+        <di:waypoint x="1045" y="120" />
+        <di:waypoint x="1045" y="175" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Experiments_Merge_di" bpmnElement="Flow_Experiments_Merge">
+        <di:waypoint x="960" y="290" />
+        <di:waypoint x="1045" y="290" />
+        <di:waypoint x="1045" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Merge_Report_di" bpmnElement="Flow_Merge_Report">
+        <di:waypoint x="1070" y="200" />
+        <di:waypoint x="1130" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Report_End_di" bpmnElement="Flow_Report_End">
+        <di:waypoint x="1230" y="200" />
+        <di:waypoint x="1292" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_065ifs0_di" bpmnElement="Flow_065ifs0">
+        <di:waypoint x="710" y="200" />
+        <di:waypoint x="750" y="200" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

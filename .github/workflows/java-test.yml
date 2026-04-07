@@ -27,4 +27,4 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
         
     - name: Run tests
-      run: mvn -B test --file java/pom.xml
+      run: mvn -B test --file 2-order-process-with-service-workers/java/pom.xml

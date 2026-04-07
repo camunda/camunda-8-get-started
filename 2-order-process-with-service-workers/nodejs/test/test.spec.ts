@@ -7,7 +7,7 @@ describe('Process Test Suite', () => {
     test('Can complete the process instance using mocks', async () => {
         const client = setup.getClient().getCamundaRestClient();
         const context = setup.getContext();
-        await context.deployProcess('../bpmn/diagram_1.bpmn')
+        await context.deployProcess('../bpmn/order-process.bpmn')
 
         const processInstance = await client.createProcessInstance({
             processDefinitionId: 'process1',
@@ -28,7 +28,7 @@ describe('Process Test Suite', () => {
     test('Can complete the process instance using the actual workers', async () => {
         const client = setup.getClient().getCamundaRestClient();
         const context = setup.getContext();
-        await context.deployProcess('../bpmn/diagram_1.bpmn')
+        await context.deployProcess('../bpmn/order-process.bpmn')
 
         const processInstance = await client.createProcessInstance({
             processDefinitionId: 'process1',
