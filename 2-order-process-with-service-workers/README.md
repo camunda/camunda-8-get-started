@@ -16,17 +16,17 @@ The Camunda Modeler is a graphical tool for creating and editing BPMN process mo
 
 Download the Camunda Modeler from the [Camunda download website](https://camunda.com/download/modeler/).
 
-## Download Camunda 8 Run
+## Install `c8ctl`
 
-Camunda 8 Run is a self-contained Java application that runs Camunda 8 locally. 
+```bash
+npm install @camunda8/cli@alpha -g
+```
 
-Download the latest 8.8 release of Camunda 8 Run from [the download page](https://downloads.camunda.cloud/release/camunda/c8run/).
-
-Camunda 8 Run requires JDK 21-23.
-
-See [here](https://docs.camunda.io/docs/self-managed/setup/deploy/local/c8run/) for more information on running Camunda 8 Run.
-
-Start Camunda 8 Run. 
+## Start the local Camunda Cluster
+JDK 21-23 Required.
+```bash
+c8ctl cluster start
+```
 
 ## Start a process instance
 

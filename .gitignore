@@ -2,6 +2,6 @@ node_modules
 .idea
 .DS_Store
 .vscode
-java/target
+*/java/target
 camunda-test-logs
 nodejs/distribution
