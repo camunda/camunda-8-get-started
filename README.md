@@ -30,7 +30,7 @@ This repository contains hands-on Camunda 8 examples that help you get started w
 - Camunda 8 local environment (for example via `c8ctl c8run`)
 - Camunda Modeler (recommended for viewing the models, deploying/running visually)
 - For Java example:
-- JDK 21+
+- JDK 21-25
 - Maven
 - For Node.js example:
 - Node.js 18+

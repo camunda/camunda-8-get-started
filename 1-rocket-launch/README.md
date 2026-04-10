@@ -51,7 +51,7 @@ npm install @camunda8/cli@alpha -g
 ```
 
 ### 1. Start the local Camunda Cluster
-JDK 21-23 Required
+JDK 21-25 Required
 ```bash
 c8ctl cluster start
 ```
