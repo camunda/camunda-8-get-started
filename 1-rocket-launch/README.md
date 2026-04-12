@@ -47,11 +47,11 @@ The simplest way to interact with Camunda is using the CLI tool called `c8ctl`. 
 ### 0. Install `c8ctl`
 
 ```bash
-npm install @camunda8/cli -g
+npm install @camunda8/cli@alpha -g
 ```
 
-### 1. Start Camunda
-
+### 1. Start the local Camunda Cluster
+JDK 21-25 Required
 ```bash
 c8ctl cluster start
 ```
