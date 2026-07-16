@@ -42,6 +42,8 @@ There you will see an active process instance. (Note: when the workers are runni
 
 ## Run Node.js workers (if using JavaScript)
 
+See [nodejs/README.md](nodejs/README.md) for details, including how to run the tests.
+
 ```bash
 cd nodejs
 npm i
@@ -50,12 +52,16 @@ npm start
 
 ## Run Java workers (if using Java)
 
+See [java/README.md](java/README.md) for details, including how to run the tests.
+
 ```bash
 cd java
 mvn spring-boot:run
 ```
 
 ## Run Python workers (if using Python)
+
+See [python/README.md](python/README.md) for details, including how to run the tests.
 
 Requires Python 3.10+.
 
@@ -68,6 +74,8 @@ python main.py
 ```
 
 ## Run C# workers (if using C#)
+
+See [csharp/README.md](csharp/README.md) for details, including how to run the tests.
 
 > **Technical preview**: the C# SDK is not yet officially supported for production use.
 
