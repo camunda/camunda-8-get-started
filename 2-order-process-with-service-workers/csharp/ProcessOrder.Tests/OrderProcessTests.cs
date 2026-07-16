@@ -24,8 +24,7 @@ public class OrderProcessTests
             },
         });
 
-        var bpmnPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "bpmn", "order-process.bpmn");
-        await client.DeployResourcesFromFilesAsync(new[] { bpmnPath });
+        var bpmnPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "..", "bpmn", "order-process.bpmn"));
 
         Workers.Register(client);
 
@@ -50,6 +49,14 @@ public class OrderProcessTests
         finally
         {
             cts.Cancel();
+            try
+            {
+                await runTask;
+            }
+            catch (OperationCanceledException)
+            {
+                // expected
+            }
         }
     }
 }
