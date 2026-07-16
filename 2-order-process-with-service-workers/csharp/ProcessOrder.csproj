@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- Without this, "or later" SDKs (9, 10, ...) fail to launch when only the
+         matching net8.0 runtime is missing, since the default roll-forward
+         policy (Minor) doesn't cross major versions. -->
+    <RollForward>LatestMajor</RollForward>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Camunda.Orchestration.Sdk" Version="9.1.3" />
+  </ItemGroup>
+
+  <!-- ProcessOrder.Tests is a separate project nested in this directory; without this,
+       the default **/*.cs glob here would also compile its sources (and its obj/ build
+       artifacts) into this Exe. -->
+  <ItemGroup>
+    <Compile Remove="ProcessOrder.Tests/**/*.cs" />
+  </ItemGroup>
+
+</Project>

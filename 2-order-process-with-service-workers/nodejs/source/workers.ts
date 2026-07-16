@@ -20,7 +20,7 @@ export function startWorkers(client: CamundaRestClient) {
         worker: 'check-inventory-worker',
         jobHandler: async (job, log) => {
             log.info('Processing check-inventory job:', job.jobKey)
-            const item = job.variables.item ?? 'default-item'
+            const item = job.variables.item || 'default-item'
             log.info(`Checking inventory for item: ${item}`)
             // Simulate checking inventory
             await new Promise((resolve) => setTimeout(resolve, 2000))
