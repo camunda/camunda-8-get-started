@@ -5,6 +5,10 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <!-- Without this, "or later" SDKs (9, 10, ...) fail to launch when only the
+         matching net8.0 runtime is missing, since the default roll-forward
+         policy (Minor) doesn't cross major versions. -->
+    <RollForward>LatestMajor</RollForward>
   </PropertyGroup>
 
   <ItemGroup>

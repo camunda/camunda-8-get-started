@@ -31,7 +31,7 @@ c8ctl cluster start
 ## Start a process instance
 
 1. Open Camunda Modeler
-2. Open the file `bpmn/diagram_1.bpmn` from the example project.
+2. Open the file `bpmn/order-process.bpmn` from the example project.
 3. Start a new process instance in the Modeler by clicking the Play icon in the bottom toolbar.
 
 You can view the process instance in Operate, the visual operating tool, by going to [http://localhost:8080/operate](http://localhost:8080/operate). The login details are `demo`/`demo`.

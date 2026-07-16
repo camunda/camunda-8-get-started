@@ -9,9 +9,12 @@ nodejs/distribution
 # C# build artifacts
 **/csharp/bin
 **/csharp/obj
+**/csharp-tests/bin
+**/csharp-tests/obj
 
 # Python artifacts
 __pycache__
 *.pyc
 .venv
 venv
+.pytest_cache
