@@ -1,0 +1,55 @@
+name: Python Integration tests
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  python-integration-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v6
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Set up Node.js (for c8ctl)
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Install c8ctl
+        run: npm install -g @camunda8/cli
+
+      # camunda-orchestration-sdk has no ephemeral-engine test harness yet
+      # (unlike java/nodejs's camunda-process-test), so the tests need a
+      # real running local cluster to drive the REST API against.
+      - name: Start local Camunda 8 cluster
+        run: |
+          c8ctl cluster start
+          c8ctl cluster status
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          cd 2-order-process-with-service-workers/python
+          pip install -r requirements-test.txt
+
+      - name: Run tests
+        run: |
+          cd 2-order-process-with-service-workers/python
+          pytest
+
+      - name: Stop local Camunda 8 cluster
+        if: always()
+        run: c8ctl cluster stop
