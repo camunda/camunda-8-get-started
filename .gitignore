@@ -5,3 +5,13 @@ node_modules
 */java/target
 camunda-test-logs
 nodejs/distribution
+
+# C# build artifacts
+**/csharp/bin
+**/csharp/obj
+
+# Python artifacts
+__pycache__
+*.pyc
+.venv
+venv

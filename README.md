@@ -11,9 +11,11 @@ This repository contains hands-on Camunda 8 examples that help you get started w
 
 - `2-order-process-with-service-workers/`
 - A process example that uses external job workers
-- Includes two worker implementations:
+- Includes four worker implementations:
 - `java/` (Spring Boot, Java 21)
 - `nodejs/` (TypeScript, `@camunda8/sdk`)
+- `python/` (Python 3.10+, `camunda-orchestration-sdk`)
+- `csharp/` (.NET 8+, `Camunda.Orchestration.Sdk`)
 - Best for learning worker-based orchestration and application integration
 
 - `renovate.json`
@@ -23,7 +25,7 @@ This repository contains hands-on Camunda 8 examples that help you get started w
 
 1. Start with `1-rocket-launch`.
 2. Move to `2-order-process-with-service-workers`.
-   1. Pick one worker stack first (`java` or `nodejs`), then try the other.
+   1. Pick one worker stack first (`java`, `nodejs`, `python`, or `csharp`), then try the others.
 
 ## Prerequisites
 
@@ -35,6 +37,11 @@ This repository contains hands-on Camunda 8 examples that help you get started w
 - For Node.js example:
 - Node.js 18+
 - npm
+- For Python example:
+- Python 3.10+
+- pip
+- For C# example:
+- .NET 8 SDK (or later)
 
 ## Quick start
 
@@ -55,8 +62,8 @@ Then run one worker implementation.
 1. Deploy and run `rocket-launch.bpmn` and inspect execution in Operate.
 2. Change input variables and observe different paths.
 3. Deploy the order process and run with Java workers.
-4. Repeat with Node.js workers.
-5. Compare implementation styles between Java and TypeScript.
+4. Repeat with Node.js, Python, and C# workers.
+5. Compare implementation styles across Java, TypeScript, Python, and C#.
 
 ## Where to go next
 

@@ -1,6 +1,6 @@
 # Getting Started with Camunda 8
 
-This [demonstration project](https://github.com/camunda/camunda-8-get-started) allows you to get started with Camunda 8 - running a local instance of Camunda 8, deploying a process model from the Camunda Modeler, and starting an instance that is serviced by job workers using either the Spring SDK (Java) or the Node.js SDK (Javascript).
+This [demonstration project](https://github.com/camunda/camunda-8-get-started) allows you to get started with Camunda 8 - running a local instance of Camunda 8, deploying a process model from the Camunda Modeler, and starting an instance that is serviced by job workers using the Spring SDK (Java), the Node.js SDK (JavaScript), the Python SDK, or the C# SDK.
 
 Refer to the [Camunda Documentation](https://docs.camunda.io/docs/guides/getting-started-example/) for additional information.
 
@@ -53,3 +53,23 @@ cd java
 mvn spring-boot:run
 ```
 
+## Run Python workers (if using Python)
+
+Requires Python 3.10+.
+
+```bash
+cd python
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python main.py
+```
+
+## Run C# workers (if using C#)
+
+Requires the .NET 8 SDK (or later).
+
+```bash
+cd csharp
+dotnet run
+```
