@@ -12,10 +12,10 @@ This repository contains hands-on Camunda 8 examples that help you get started w
 - `2-order-process-with-service-workers/`
 - A process example that uses external job workers
 - Includes four worker implementations:
-- `java/` (Spring Boot, Java 21)
-- `nodejs/` (TypeScript, `@camunda8/sdk`)
-- `python/` (Python 3.10+, `camunda-orchestration-sdk`)
-- `csharp/` (.NET 8+, `Camunda.Orchestration.Sdk`)
+- `java/` (Spring Boot, Java 21) — officially supported, production-ready
+- `nodejs/` (TypeScript, `@camunda8/sdk`) — officially supported, production-ready
+- `python/` (Python 3.10+, `camunda-orchestration-sdk`) — officially supported, production-ready
+- `csharp/` (.NET 8+, `Camunda.Orchestration.Sdk`) — **technical preview**, not yet production-ready
 - Best for learning worker-based orchestration and application integration
 
 - `renovate.json`
@@ -40,7 +40,7 @@ This repository contains hands-on Camunda 8 examples that help you get started w
 - For Python example:
 - Python 3.10+
 - pip
-- For C# example:
+- For C# example (technical preview SDK):
 - .NET 8 SDK (or later)
 
 ## Quick start

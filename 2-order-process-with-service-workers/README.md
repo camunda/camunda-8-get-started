@@ -2,6 +2,8 @@
 
 This [demonstration project](https://github.com/camunda/camunda-8-get-started) allows you to get started with Camunda 8 - running a local instance of Camunda 8, deploying a process model from the Camunda Modeler, and starting an instance that is serviced by job workers using the Spring SDK (Java), the Node.js SDK (JavaScript), the Python SDK, or the C# SDK.
 
+The Java, Node.js, and Python SDKs are officially supported and production-ready. The C# SDK is currently a **technical preview**.
+
 Refer to the [Camunda Documentation](https://docs.camunda.io/docs/guides/getting-started-example/) for additional information.
 
 ## Download Demonstration Project
@@ -66,6 +68,8 @@ python main.py
 ```
 
 ## Run C# workers (if using C#)
+
+> **Technical preview**: the C# SDK is not yet officially supported for production use.
 
 Requires the .NET 8 SDK (or later).
 
