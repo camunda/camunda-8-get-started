@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../csharp/ProcessOrder.csproj" />
+    <ProjectReference Include="../ProcessOrder.csproj" />
   </ItemGroup>
 
 </Project>

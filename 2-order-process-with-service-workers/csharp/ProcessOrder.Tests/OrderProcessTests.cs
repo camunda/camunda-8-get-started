@@ -24,7 +24,7 @@ public class OrderProcessTests
             },
         });
 
-        var bpmnPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "bpmn", "order-process.bpmn");
+        var bpmnPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "bpmn", "order-process.bpmn");
         await client.DeployResourcesFromFilesAsync(new[] { bpmnPath });
 
         Workers.Register(client);
