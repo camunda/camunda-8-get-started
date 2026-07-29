@@ -16,6 +16,7 @@ This repository contains hands-on Camunda 8 examples that help you get started w
 - `nodejs/` (TypeScript, `@camunda8/sdk`) — officially supported, production-ready
 - `python/` (Python 3.10+, `camunda-orchestration-sdk`) — officially supported, production-ready
 - `csharp/` (.NET 8+, `Camunda.Orchestration.Sdk`) — **technical preview**, not yet production-ready
+- Plus `browser/` — the same process running entirely in your browser on the open-source [nanobpm](https://github.com/Magikcraft/nano-bpm) WebAssembly engine, with the worker code editable live in Monaco (no cluster required)
 - Best for learning worker-based orchestration and application integration
 
 - `renovate.json`
@@ -42,6 +43,8 @@ This repository contains hands-on Camunda 8 examples that help you get started w
 - pip
 - For C# example (technical preview SDK):
 - .NET 8 SDK (or later)
+- For the in-browser example (`2-order-process-with-service-workers/browser/`):
+- Node.js 24+ (required by `@camunda/design-system`) and npm
 
 ## Quick start
 

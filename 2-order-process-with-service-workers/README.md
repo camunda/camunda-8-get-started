@@ -85,3 +85,20 @@ Requires the .NET 8 SDK (or later).
 cd csharp
 dotnet run
 ```
+
+## Run it live in the browser (no cluster needed)
+
+Want to see the process execute without installing a cluster at all? The
+[browser/](browser/README.md) example runs a copy of this BPMN and the same
+three task types entirely in your browser, on the WebAssembly build of the
+nanobpm engine, with the worker code editable live in a Monaco editor.
+(Requires Node.js 24+, unlike the Node.js worker stack above.)
+
+```bash
+cd browser
+npm install
+npm run dev
+```
+
+> This uses the open-source nanobpm engine, not the production Camunda 8 engine —
+> a zero-setup way to *watch* a BPMN process run.
