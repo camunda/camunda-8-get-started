@@ -43,6 +43,8 @@ This repository contains hands-on Camunda 8 examples that help you get started w
 - pip
 - For C# example (technical preview SDK):
 - .NET 8 SDK (or later)
+- For the in-browser example (`2-order-process-with-service-workers/browser/`):
+- Node.js 24+ (required by `@camunda/design-system`) and npm
 
 ## Quick start
 

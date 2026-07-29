@@ -3,8 +3,8 @@ import type { JobHandler } from "@nanobpm/bojtos-react";
 /**
  * The three service workers for the order process, one per BPMN task type.
  *
- * These are the exact same three jobs as the Node.js example
- * (`../nodejs/source/workers.ts`) — `check-inventory`, `charge-payment` and
+ * These are the exact same three task types as the Node.js example
+ * (`../../nodejs/source/workers.ts`) — `check-inventory`, `charge-payment` and
  * `ship-items` — but written as in-browser handlers. Instead of calling
  * `job.complete(vars)` against a Camunda 8 cluster, an in-browser handler simply
  * **returns** the variables to merge onto the process instance (or throws to

@@ -35,6 +35,19 @@ const BEAT = 850;
 const FALLBACK_PROCESS_ID = "process1";
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+/**
+ * Stringify a worker's return value for the activity log without letting a
+ * user-edited handler (e.g. one returning a circular object) throw and break the
+ * run loop — this is a live-edit playground.
+ */
+function safeStringify(value: unknown, space?: number): string {
+  try {
+    return JSON.stringify(value ?? {}, null, space);
+  } catch {
+    return "[unserializable value]";
+  }
+}
+
 interface LogEntry {
   id: number;
   kind: "start" | "task" | "done" | "vars" | "error";
@@ -98,7 +111,7 @@ export function App() {
           }
           pushLog(
             "vars",
-            `↳ returned ${JSON.stringify(out ?? {})}`,
+            `↳ returned ${safeStringify(out)}`,
           );
           return out;
         };
@@ -250,7 +263,7 @@ export function App() {
                 </CardHeader>
                 <CardContent>
                   <pre className="vars">
-                    {JSON.stringify(variables, null, 2)}
+                    {safeStringify(variables, 2)}
                   </pre>
                 </CardContent>
               </Card>
