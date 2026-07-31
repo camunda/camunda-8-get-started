@@ -27,25 +27,15 @@ export interface WorkerDef {
 const CHECK_INVENTORY = `async (job) => {
   // The starting variables flow in on 'job.variables'.
   const item = job.variables.item ?? "default-item";
-  const quantity = Number(job.variables.quantity ?? 1);
 
   // Pretend to check a warehouse (the Node.js worker waits 2000ms here).
   await new Promise((resolve) => setTimeout(resolve, 500));
-
-  // For demo purposes: large orders are always out of stock.
-  if (quantity >= 10) {
-    return { item, inStock: false };
-  }
 
   // Whatever you return is merged onto the process instance's variables.
   return { item: item + " allocated", inStock: true };
 }`;
 
 const CHARGE_PAYMENT = `async (job) => {
-  if (job.variables.inStock === false) {
-    throw new Error("Item is out of stock; payment not charged.");
-  }
-
   const quantity = job.variables.quantity ?? 1;
   const unitPrice = 25; // try changing this and re-running
 
@@ -55,10 +45,6 @@ const CHARGE_PAYMENT = `async (job) => {
 }`;
 
 const SHIP_ITEMS = `async (job) => {
-  if (job.variables.inStock === false) {
-    throw new Error("Item is out of stock; nothing to ship.");
-  }
-
   await new Promise((resolve) => setTimeout(resolve, 500));
 
   // Throw to fail the job and raise an incident on the diagram — try it!
