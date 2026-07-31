@@ -51,10 +51,43 @@ const SHIP_ITEMS = `async (job) => {
   return { shipped: true, tracking: "1Z" + Math.floor(Math.random() * 1e9) };
 }`;
 
+const GENERIC_HANDLER = (taskType: string, taskLabel: string) => `async (job) => {
+  const resultKey = ${JSON.stringify(`${taskType}Result`)};
+  const resultValue = ${JSON.stringify(`${taskLabel} completed`)};
+
+  // Variables from the process instance are available on 'job.variables'.
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  // Return an object to merge variables back into the instance.
+  return { [resultKey]: resultValue };
+}`;
+
+const KNOWN_SOURCES: Record<string, string> = {
+  "check-inventory": CHECK_INVENTORY,
+  "charge-payment": CHARGE_PAYMENT,
+  "ship-items": SHIP_ITEMS,
+};
+
+export function defaultSourceForTask(type: string, label: string): string {
+  return KNOWN_SOURCES[type] ?? GENERIC_HANDLER(type, label);
+}
+
 export const WORKER_DEFS: WorkerDef[] = [
-  { type: "check-inventory", label: "Check inventory", source: CHECK_INVENTORY },
-  { type: "charge-payment", label: "Charge payment method", source: CHARGE_PAYMENT },
-  { type: "ship-items", label: "Ship items", source: SHIP_ITEMS },
+  {
+    type: "check-inventory",
+    label: "Check inventory",
+    source: defaultSourceForTask("check-inventory", "Check inventory"),
+  },
+  {
+    type: "charge-payment",
+    label: "Charge payment method",
+    source: defaultSourceForTask("charge-payment", "Charge payment method"),
+  },
+  {
+    type: "ship-items",
+    label: "Ship items",
+    source: defaultSourceForTask("ship-items", "Ship items"),
+  },
 ];
 
 /** The starting payload — identical to the Node.js example's seed. */

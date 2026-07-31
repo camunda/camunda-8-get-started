@@ -15,15 +15,19 @@ npm run dev
 ```
 
 Open the URL it prints (default <http://localhost:5173>) and press **▶ Run**.
+Then change input values and service worker code, and run again to compare the
+result.
 
 ## What you get
 
 - The `order-process.bpmn` model (a copy of `../bpmn/order-process.bpmn`)
   rendered live with [bpmn-js](https://github.com/bpmn-io/bpmn-js). A green token
   walks the diagram task-by-task; a failed job turns its task red (an incident).
-- Three editable workers — `check-inventory`, `charge-payment`, `ship-items` —
-  one per BPMN `zeebe:taskDefinition type`. Edit the code, press **Run**, and
-  watch the process react.
+- Editable input parameters (JSON), plus editable worker code for each BPMN
+  `zeebe:taskDefinition type`. Change both freely and press **Run** repeatedly
+  to see how the process behavior changes.
+- The BPMN model itself is read-only in this browser demo; this example focuses
+  on tweaking input values and worker behavior.
 - A live **Variables** panel (the instance payload) and an **Activity** log of
   what each worker did.
 
