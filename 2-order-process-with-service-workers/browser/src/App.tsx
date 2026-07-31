@@ -48,6 +48,19 @@ function safeStringify(value: unknown, space?: number): string {
   }
 }
 
+function parseSeedVariables(source: string): Record<string, unknown> {
+  const parsed = JSON.parse(source);
+  if (!parsed || Array.isArray(parsed) || typeof parsed !== "object") {
+    throw new Error("Seed variables must be a JSON object.");
+  }
+  return parsed as Record<string, unknown>;
+}
+
+function summarizeSeed(source: string): string {
+  const oneLine = source.replace(/\s+/g, " ").trim();
+  return oneLine.length > 72 ? `${oneLine.slice(0, 72)}…` : oneLine;
+}
+
 interface LogEntry {
   id: number;
   kind: "start" | "task" | "done" | "vars" | "error";
@@ -55,6 +68,13 @@ interface LogEntry {
 }
 
 export function App() {
+  const [workerSources, setWorkerSources] = useState<string[]>(() =>
+    WORKER_DEFS.map((d) => d.source),
+  );
+  const [seedSource, setSeedSource] = useState(() =>
+    JSON.stringify(SEED_VARIABLES, null, 2),
+  );
+
   const {
     phase,
     error,
@@ -65,12 +85,11 @@ export function App() {
     reset,
   } = useBojtos({ bpmn: orderProcessBpmn });
 
-  const [sources, setSources] = useState<string[]>(() =>
-    WORKER_DEFS.map((d) => d.source),
-  );
   const [activeTab, setActiveTab] = useState(WORKER_DEFS[0].type);
   const [running, setRunning] = useState(false);
+  const [showInputEditor, setShowInputEditor] = useState(false);
   const [compileError, setCompileError] = useState<string | null>(null);
+  const [inputError, setInputError] = useState<string | null>(null);
   const [log, setLog] = useState<LogEntry[]>([]);
   const [displayVars, setDisplayVars] = useState<Record<string, unknown>>({});
 
@@ -87,7 +106,7 @@ export function App() {
   }, []);
 
   const setSource = useCallback((index: number, value: string) => {
-    setSources((prev) => {
+    setWorkerSources((prev) => {
       const next = [...prev];
       next[index] = value;
       return next;
@@ -97,12 +116,22 @@ export function App() {
   const run = useCallback(async () => {
     if (phase !== "ready" || runningRef.current) return;
 
+    let seedVariables: Record<string, unknown>;
+    try {
+      seedVariables = parseSeedVariables(seedSource);
+    } catch (e) {
+      setInputError(String(e));
+      return;
+    }
+    setInputError(null);
+    setCompileError(null);
+
     // Compile every editor first, so a syntax error is reported before we touch
     // the engine (and we can point at the offending worker).
     const workers: Record<string, JobHandler> = {};
     try {
       WORKER_DEFS.forEach((def, i) => {
-        const handler = compileHandler(sources[i]);
+        const handler = compileHandler(workerSources[i] ?? def.source);
         workers[def.type] = async (job) => {
           pushLog("task", `▶ ${def.label} — running ${def.type}`);
           const out = await handler(job);
@@ -120,18 +149,17 @@ export function App() {
       setCompileError(String(e));
       return;
     }
-    setCompileError(null);
 
     runningRef.current = true;
     setRunning(true);
     setLog([]);
-    setDisplayVars({ ...SEED_VARIABLES });
+    setDisplayVars({ ...seedVariables });
     try {
       // Fresh engine each run so completedInstances starts at 0.
       reset();
       const pid = processIds[0] ?? FALLBACK_PROCESS_ID;
       pushLog("start", `Order received — starting "${pid}"`);
-      let snap = createInstance(pid, JSON.stringify(SEED_VARIABLES));
+      let snap = createInstance(pid, JSON.stringify(seedVariables));
       await sleep(BEAT);
 
       let guard = 0;
@@ -151,7 +179,16 @@ export function App() {
       runningRef.current = false;
       setRunning(false);
     }
-  }, [phase, sources, processIds, createInstance, stepWorkers, reset, pushLog]);
+  }, [
+    phase,
+    seedSource,
+    workerSources,
+    processIds,
+    createInstance,
+    stepWorkers,
+    reset,
+    pushLog,
+  ]);
 
   const stop = useCallback(() => {
     runningRef.current = false;
@@ -214,10 +251,49 @@ export function App() {
               ↺ Reset
             </Button>
             {statusBadge}
-            <span className="seed">
-              seed: <code>{JSON.stringify(SEED_VARIABLES)}</code>
-            </span>
+            <button
+              type="button"
+              className="seed seed-button"
+              onClick={() => setShowInputEditor((v) => !v)}
+              disabled={running}
+              title="Click to edit input parameters"
+            >
+              <span className="seed-edit-icon" aria-hidden="true">✎</span>{" "}
+              input: <code>{summarizeSeed(seedSource)}</code>
+            </button>
           </div>
+          {showInputEditor && (
+            <div className="inline-input-editor">
+              <div className="editor-meta editor-meta-actions">
+                <div>
+                  <strong>Input parameters</strong>{" "}
+                  <code>JSON object</code>
+                </div>
+                <Button
+                  variant="secondary"
+                  onClick={() => setShowInputEditor(false)}
+                  size="sm"
+                >
+                  Done
+                </Button>
+              </div>
+              <div className="editor-wrap">
+                <Editor
+                  height="120px"
+                  defaultLanguage="json"
+                  value={seedSource}
+                  onChange={(v) => setSeedSource(v ?? "{}")}
+                  options={{
+                    minimap: { enabled: false },
+                    fontSize: 13,
+                    scrollBeyondLastLine: false,
+                    tabSize: 2,
+                    automaticLayout: true,
+                  }}
+                />
+              </div>
+            </div>
+          )}
           {phase === "error" && (
             <Alert variant="destructive">
               <AlertTitle>Failed to load the engine</AlertTitle>
@@ -228,6 +304,12 @@ export function App() {
             <Alert variant="destructive">
               <AlertTitle>Worker code didn't compile</AlertTitle>
               <AlertDescription>{compileError}</AlertDescription>
+            </Alert>
+          )}
+          {inputError && (
+            <Alert variant="destructive">
+              <AlertTitle>Input variables are invalid</AlertTitle>
+              <AlertDescription>{inputError}</AlertDescription>
             </Alert>
           )}
         </section>
@@ -295,7 +377,7 @@ export function App() {
               <CardHeader>
                 <CardTitle>Service workers</CardTitle>
                 <CardDescription>
-                  Each handler serves one BPMN task type. Return the variables to
+                  Each handler serves one BPMN task type. Return variables to
                   merge, or throw to fail the job.
                 </CardDescription>
               </CardHeader>
@@ -317,9 +399,9 @@ export function App() {
                       </div>
                       <div className="editor-wrap">
                         <Editor
-                          height="320px"
+                          height="260px"
                           defaultLanguage="javascript"
-                          value={sources[i]}
+                          value={workerSources[i]}
                           onChange={(v) => setSource(i, v ?? "")}
                           options={{
                             minimap: { enabled: false },
