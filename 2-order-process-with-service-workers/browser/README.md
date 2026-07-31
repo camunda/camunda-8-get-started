@@ -23,6 +23,8 @@ Open the URL it prints (default <http://localhost:5173>) and press **▶ Run**.
   walks the diagram task-by-task; a failed job turns its task red (an incident).
 - Editable input parameters (JSON), plus editable worker code for each BPMN
   `zeebe:taskDefinition type`. Edit and press **Run** to watch the process react.
+- The default `check-inventory` worker treats `quantity >= 10` as out of stock,
+  so you can quickly test alternate paths by changing only input JSON.
 - A live **Variables** panel (the instance payload) and an **Activity** log of
   what each worker did.
 
@@ -43,6 +45,8 @@ variables to merge (or throws to fail the job):
 ```js
 async (job) => {
   const item = job.variables.item ?? "default-item";
+  const quantity = Number(job.variables.quantity ?? 1);
+  if (quantity >= 10) return { item, inStock: false };
   return { item: item + " allocated", inStock: true };
 };
 ```

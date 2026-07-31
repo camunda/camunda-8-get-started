@@ -241,7 +241,9 @@ export function App() {
             <code>nodejs/</code> example — but there is no Camunda 8 cluster here.
             The real nanobpm engine executes the process in your browser. Edit a
             worker's JavaScript on the right, hit <strong>Run</strong>, and watch
-            the token move and the variables change.
+            the token move and the variables change. By default,{" "}
+            <code>check-inventory</code> marks orders with{" "}
+            <code>quantity &gt;= 10</code> as out of stock.
           </p>
           <div className="controls">
             <Button onClick={run} disabled={phase !== "ready" || running}>
@@ -256,7 +258,7 @@ export function App() {
               className="seed seed-button"
               onClick={() => setShowInputEditor((v) => !v)}
               disabled={running}
-              title="Click to edit input parameters"
+              title="Click to edit input parameters (quantity >= 10 becomes out of stock)"
             >
               <span className="seed-edit-icon" aria-hidden="true">✎</span>{" "}
               input: <code>{summarizeSeed(seedSource)}</code>

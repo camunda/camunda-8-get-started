@@ -27,9 +27,15 @@ export interface WorkerDef {
 const CHECK_INVENTORY = `async (job) => {
   // The starting variables flow in on 'job.variables'.
   const item = job.variables.item ?? "default-item";
+  const quantity = Number(job.variables.quantity ?? 1);
 
   // Pretend to check a warehouse (the Node.js worker waits 2000ms here).
   await new Promise((resolve) => setTimeout(resolve, 500));
+
+  // For demo purposes: large orders are always out of stock.
+  if (quantity >= 10) {
+    return { item, inStock: false };
+  }
 
   // Whatever you return is merged onto the process instance's variables.
   return { item: item + " allocated", inStock: true };
