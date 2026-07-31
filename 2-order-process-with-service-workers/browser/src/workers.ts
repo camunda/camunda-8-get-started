@@ -42,6 +42,10 @@ const CHECK_INVENTORY = `async (job) => {
 }`;
 
 const CHARGE_PAYMENT = `async (job) => {
+  if (job.variables.inStock === false) {
+    throw new Error("Item is out of stock; payment not charged.");
+  }
+
   const quantity = job.variables.quantity ?? 1;
   const unitPrice = 25; // try changing this and re-running
 
@@ -51,6 +55,10 @@ const CHARGE_PAYMENT = `async (job) => {
 }`;
 
 const SHIP_ITEMS = `async (job) => {
+  if (job.variables.inStock === false) {
+    throw new Error("Item is out of stock; nothing to ship.");
+  }
+
   await new Promise((resolve) => setTimeout(resolve, 500));
 
   // Throw to fail the job and raise an incident on the diagram — try it!

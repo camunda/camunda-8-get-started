@@ -24,7 +24,8 @@ Open the URL it prints (default <http://localhost:5173>) and press **▶ Run**.
 - Editable input parameters (JSON), plus editable worker code for each BPMN
   `zeebe:taskDefinition type`. Edit and press **Run** to watch the process react.
 - The default `check-inventory` worker treats `quantity >= 10` as out of stock,
-  so you can quickly test alternate paths by changing only input JSON.
+  and `charge-payment` / `ship-items` then fail with an incident, so you can
+  quickly test alternate paths by changing only input JSON.
 - A live **Variables** panel (the instance payload) and an **Activity** log of
   what each worker did.
 
@@ -53,7 +54,9 @@ async (job) => {
 
 Everything else — the token advancing, gateways, the variables merging — is the
 real engine, running on WebAssembly. Try making `ship-items` `throw new
-Error("no stock")` and re-run to see an incident appear on the diagram.
+Error("no stock")` and re-run to see an incident appear on the diagram. With the
+default handlers, setting `quantity` to `10` or higher already triggers that
+incident path.
 
 ## Scripts
 

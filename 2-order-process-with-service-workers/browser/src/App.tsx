@@ -243,7 +243,9 @@ export function App() {
             worker's JavaScript on the right, hit <strong>Run</strong>, and watch
             the token move and the variables change. By default,{" "}
             <code>check-inventory</code> marks orders with{" "}
-            <code>quantity &gt;= 10</code> as out of stock.
+            <code>quantity &gt;= 10</code> as out of stock, and{" "}
+            <code>charge-payment</code>/<code>ship-items</code> raise an incident
+            when that happens.
           </p>
           <div className="controls">
             <Button onClick={run} disabled={phase !== "ready" || running}>
@@ -258,7 +260,7 @@ export function App() {
               className="seed seed-button"
               onClick={() => setShowInputEditor((v) => !v)}
               disabled={running}
-              title="Click to edit input parameters (quantity >= 10 becomes out of stock)"
+              title="Click to edit input parameters (quantity >= 10 becomes out of stock and raises incident)"
             >
               <span className="seed-edit-icon" aria-hidden="true">✎</span>{" "}
               input: <code>{summarizeSeed(seedSource)}</code>
