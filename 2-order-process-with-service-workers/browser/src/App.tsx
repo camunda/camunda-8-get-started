@@ -240,8 +240,8 @@ export function App() {
             This is the same BPMN and the same three service workers as the{" "}
             <code>nodejs/</code> example — but there is no Camunda 8 cluster here.
             The real nanobpm engine executes the process in your browser. Edit a
-            worker's JavaScript on the right, hit <strong>Run</strong>, and watch
-            the token move and the variables change.
+            worker's JavaScript and input values, hit <strong>Run</strong>, and
+            watch the token move and the variables change.
           </p>
           <div className="controls">
             <Button onClick={run} disabled={phase !== "ready" || running}>
@@ -256,7 +256,7 @@ export function App() {
               className="seed seed-button"
               onClick={() => setShowInputEditor((v) => !v)}
               disabled={running}
-              title="Click to edit input parameters"
+              title="Try changing input values and re-running"
             >
               <span className="seed-edit-icon" aria-hidden="true">✎</span>{" "}
               input: <code>{summarizeSeed(seedSource)}</code>
