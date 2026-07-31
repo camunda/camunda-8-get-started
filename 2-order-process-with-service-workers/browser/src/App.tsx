@@ -115,16 +115,16 @@ export function App() {
 
   const run = useCallback(async () => {
     if (phase !== "ready" || runningRef.current) return;
+    setInputError(null);
+    setCompileError(null);
 
     let seedVariables: Record<string, unknown>;
     try {
       seedVariables = parseSeedVariables(seedSource);
     } catch (e) {
-      setInputError(String(e));
+      setInputError(e instanceof Error ? e.message : String(e));
       return;
     }
-    setInputError(null);
-    setCompileError(null);
 
     // Compile every editor first, so a syntax error is reported before we touch
     // the engine (and we can point at the offending worker).
@@ -146,7 +146,7 @@ export function App() {
         };
       });
     } catch (e) {
-      setCompileError(String(e));
+      setCompileError(e instanceof Error ? e.message : String(e));
       return;
     }
 

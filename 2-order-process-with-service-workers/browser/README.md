@@ -26,6 +26,8 @@ result.
 - Editable input parameters (JSON), plus editable worker code for each BPMN
   `zeebe:taskDefinition type`. Change both freely and press **Run** repeatedly
   to see how the process behavior changes.
+- The BPMN model itself is read-only in this browser demo; this example focuses
+  on tweaking input values and worker behavior.
 - A live **Variables** panel (the instance payload) and an **Activity** log of
   what each worker did.
 

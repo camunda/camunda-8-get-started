@@ -52,11 +52,14 @@ const SHIP_ITEMS = `async (job) => {
 }`;
 
 const GENERIC_HANDLER = (taskType: string, taskLabel: string) => `async (job) => {
+  const resultKey = ${JSON.stringify(`${taskType}Result`)};
+  const resultValue = ${JSON.stringify(`${taskLabel} completed`)};
+
   // Variables from the process instance are available on 'job.variables'.
   await new Promise((resolve) => setTimeout(resolve, 500));
 
   // Return an object to merge variables back into the instance.
-  return { "${taskType}Result": "${taskLabel} completed" };
+  return { [resultKey]: resultValue };
 }`;
 
 const KNOWN_SOURCES: Record<string, string> = {
