@@ -10,13 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@camunda/design-system": "^0.36.0",
+    "@camunda/design-system": "^0.52.0",
     "@monaco-editor/react": "^4.6.0",
-    "@nanobpm/bojtos-kit": "^0.1.0",
-    "@nanobpm/bojtos-react": "^0.1.0",
-    "@nanobpm/engine-wasm": "^0.1.0",
+    "@nanobpm/bojtos-kit": "^0.9.0",
+    "@nanobpm/bojtos-react": "^0.9.0",
+    "@nanobpm/engine-wasm": "^0.8.0",
     "bpmn-js": "^17.11.1",
-    "monaco-editor": "^0.52.2",
+    "monaco-editor": "^0.56.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
