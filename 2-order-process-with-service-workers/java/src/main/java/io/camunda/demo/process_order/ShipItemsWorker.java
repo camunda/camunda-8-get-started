@@ -1,20 +1,19 @@
 package io.camunda.demo.process_order;
+
 import io.camunda.client.annotation.JobWorker;
-import io.camunda.client.api.response.ActivatedJob;
-
-import java.util.Map;
-
+import io.camunda.client.annotation.Variable;
+import jakarta.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ShipItemsWorker {
- private final static Logger LOG = LoggerFactory.getLogger(ShipItemsWorker.class);
-    @JobWorker(type = "ship-items")
-    public Map<String, String> shipItems(final ActivatedJob job) {
-        LOG.info("Processing ship-items job: {}", job.getKey());
-        LOG.info("ship-items job completed: {}", job.getKey());
-        return Map.of();
+
+    private static final Logger LOG = LoggerFactory.getLogger(ShipItemsWorker.class);
+
+    @JobWorker
+    public void shipItems(@Variable @Nullable String item) {
+        LOG.info("Shipping item: {}", item);
     }
 }

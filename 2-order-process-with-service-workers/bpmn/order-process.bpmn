@@ -13,21 +13,21 @@
     <bpmn:sequenceFlow id="Flow_1asktip" sourceRef="Activity_08pg6im" targetRef="Event_0f9sbko" />
     <bpmn:serviceTask id="Activity_0tw2fu0" name="Check inventory">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="check-inventory" />
+        <zeebe:taskDefinition type="checkInventory" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1mpm94e</bpmn:incoming>
       <bpmn:outgoing>Flow_0udsae3</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity_1ppsbgi" name="Charge payment method">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="charge-payment" />
+        <zeebe:taskDefinition type="chargePayment" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0udsae3</bpmn:incoming>
       <bpmn:outgoing>Flow_0g2bnlp</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity_08pg6im" name="Ship items">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="ship-items" />
+        <zeebe:taskDefinition type="shipItems" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0g2bnlp</bpmn:incoming>
       <bpmn:outgoing>Flow_1asktip</bpmn:outgoing>

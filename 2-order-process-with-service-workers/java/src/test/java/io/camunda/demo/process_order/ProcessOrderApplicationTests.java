@@ -33,9 +33,9 @@ public class ProcessOrderApplicationTests {
                 .latestVersion()
                 .send()
                 .join();
-        processTestContext.mockJobWorker("check-inventory").thenComplete();
-        processTestContext.mockJobWorker("charge-payment").thenComplete();
-        processTestContext.mockJobWorker("ship-items").thenComplete();
+        processTestContext.mockJobWorker("checkInventory").thenComplete();
+        processTestContext.mockJobWorker("chargePayment").thenComplete();
+        processTestContext.mockJobWorker("shipItems").thenComplete();
         // then
         CamundaAssert.assertThat(processInstance).isCompleted();
     }
