@@ -20,7 +20,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Set up Node.js (for c8ctl)
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: "22"
 
